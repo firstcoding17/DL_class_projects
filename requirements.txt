@@ -1,0 +1,4 @@
+# requirements.txt
+PyQt5
+numpy
+Pillow
