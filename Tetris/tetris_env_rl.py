@@ -1,7 +1,7 @@
 # tetris_env_rl.py
 import numpy as np
 import random
-from typing import List, Tuple
+from typing import Tuple
 
 # ---------------------------
 # 테트리스 조각 정의
@@ -43,18 +43,18 @@ TETROMINOES = {
     ],
 }
 SHAPES = list(TETROMINOES.keys())
-SHAPE_TO_IDX = {s: i for i, s in enumerate(SHAPES)}
+
 
 # ---------------------------
-# 보드 & 환경
+# 보드 (RL용)
 # ---------------------------
-
 
 class TetrisBoardRL:
     """
-    RL 학습 전용 단일 보드.
-    - 보드는 0/1만 저장 (블록 유무만)
-    - 현재 조각 종류는 별도 변수로 관리
+    - board: (height, width) 0/1
+    - current_shape_idx: 0~6, -1이면 없음
+    - hold_shape_idx: 0~6, -1이면 홀드 비어있음
+    - can_hold: 이번 조각에서 홀드 가능 여부
     """
 
     def __init__(self, width=10, height=20):
@@ -66,9 +66,12 @@ class TetrisBoardRL:
         self.current_rotation: int = 0
         self.current_x: int = 0
         self.current_y: int = 0
+
+        self.hold_shape_idx: int = -1
+        self.can_hold: bool = True
         self.game_over: bool = False
 
-    # --- 조각 관련 ---
+    # --- 내부 유틸 ---
 
     def _get_shape_cells(self, shape_idx: int, rotation: int, ox: int, oy: int):
         shape = SHAPES[shape_idx]
@@ -87,7 +90,10 @@ class TetrisBoardRL:
                 return False
         return True
 
+    # --- 조각 관련 ---
+
     def spawn_new_piece(self):
+        """새 조각 스폰. 못 놓으면 game_over."""
         shape_idx = random.randint(0, len(SHAPES) - 1)
         rotation = 0
         ox = self.width // 2 - 2
@@ -101,16 +107,15 @@ class TetrisBoardRL:
         self.current_rotation = rotation
         self.current_x = ox
         self.current_y = oy
+        self.can_hold = True  # 새 조각 나오면 다시 홀드 가능
 
     def hard_drop_at(self, shape_idx: int, rotation: int, x: int) -> Tuple[int, bool]:
         """
-        주어진 (shape_idx, rotation, x)에 대해
-        - 위에서부터 가능한 만큼 아래로 떨어뜨려 고정
-        - 제거한 줄 수, game_over 여부 반환
-        - 만약 애초에 올릴 수 없는 위치면 (0, True) 같은 식으로 강한 패널티 줄 수 있음
+        (shape_idx, rotation, x)에 대해 최대한 아래로 떨어뜨려 고정.
+        - 줄 제거 수, game_over 여부 반환
+        - 애초에 불가능한 위치면 (0, True) 로 간주
         """
         if not self._is_valid_position(shape_idx, rotation, x, 0):
-            # 완전 말도 안 되는 위치 → illegal move로 간주
             self.game_over = True
             return 0, True
 
@@ -118,17 +123,17 @@ class TetrisBoardRL:
         while self._is_valid_position(shape_idx, rotation, x, y + 1):
             y += 1
 
-        # 고정
         for bx, by in self._get_shape_cells(shape_idx, rotation, x, y):
             self.board[by, bx] = 1
 
-        # 줄 제거
         cleared = self._clear_full_lines()
-        # 고정 후 맨 위까지 차면 game_over
+
+        # 맨 위까지 차면 패배
         if not self._is_valid_position(shape_idx, rotation, x, 0):
             self.game_over = True
+            return cleared, True
 
-        return cleared, self.game_over
+        return cleared, False
 
     def _clear_full_lines(self) -> int:
         new_rows = []
@@ -143,41 +148,83 @@ class TetrisBoardRL:
         self.board = np.stack(new_rows, axis=0)
         return cleared
 
-    # --- 상태 표현 ---
+    # --- 홀드 기능 ---
+
+    def hold_current_piece(self):
+        """
+        현재 조각을 홀드.
+        - 할 수 없으면 아무 일도 안 일어남.
+        - 홀드가 비어 있으면: 현재 조각을 홀드로 보내고 새 조각 스폰
+        - 이미 홀드가 있으면: 현재 조각과 교체
+        """
+        if not self.can_hold or self.current_shape_idx < 0 or self.game_over:
+            return
+
+        shape_to_hold = self.current_shape_idx
+
+        if self.hold_shape_idx < 0:
+            # 홀드 비어 있음 → 현재 조각을 홀드로 보내고 새 조각 스폰
+            self.hold_shape_idx = shape_to_hold
+            self.current_shape_idx = -1
+            self.current_rotation = 0
+            self.current_x = 0
+            self.current_y = 0
+            self.spawn_new_piece()
+        else:
+            # 홀드에 조각 있음 → 현재 조각과 교체
+            new_shape = self.hold_shape_idx
+            ox = self.width // 2 - 2
+            oy = 0
+            if self._is_valid_position(new_shape, 0, ox, oy):
+                self.hold_shape_idx = shape_to_hold
+                self.current_shape_idx = new_shape
+                self.current_rotation = 0
+                self.current_x = ox
+                self.current_y = oy
+            else:
+                self.game_over = True
+
+        self.can_hold = False
+
+    # --- 상태 벡터 ---
 
     def get_state_vector(self) -> np.ndarray:
         """
-        상태 벡터:
-        - board: 10x20 → 200차원 (0/1 normalize)
-        - current_shape one-hot: 7차원
-        총 207차원
+        state: [board_flat(200), current_shape_onehot(7), hold_shape_onehot(7)] = 214
         """
         board_flat = self.board.reshape(-1).astype(np.float32)
-        shape_onehot = np.zeros(len(SHAPES), dtype=np.float32)
+
+        cur_onehot = np.zeros(len(SHAPES), dtype=np.float32)
         if self.current_shape_idx >= 0:
-            shape_onehot[self.current_shape_idx] = 1.0
-        state = np.concatenate([board_flat, shape_onehot], axis=0)
+            cur_onehot[self.current_shape_idx] = 1.0
+
+        hold_onehot = np.zeros(len(SHAPES), dtype=np.float32)
+        if self.hold_shape_idx >= 0:
+            hold_onehot[self.hold_shape_idx] = 1.0
+
+        state = np.concatenate([board_flat, cur_onehot, hold_onehot], axis=0)
         return state
 
     def reset(self):
         self.board[:] = 0
-        self.game_over = False
         self.current_shape_idx = -1
         self.current_rotation = 0
         self.current_x = 0
         self.current_y = 0
-        self.spawn_new_piece()
+        self.hold_shape_idx = -1
+        self.can_hold = True
+        self.game_over = False
 
+
+# ---------------------------
+# 싱글 RL 환경
+# ---------------------------
 
 class TetrisEnv:
     """
-    간단 RL 환경:
-    - action_space: 0 ~ (width * 4 - 1)
-      → rot_id = a // width, x = a % width
-      → 실제 rotation은 rot_id % num_rotations
-    - step(action):
-      - 현재 조각을 해당 (rotation, x)에 하드드롭
-      - reward 계산 후 새 조각 스폰
+    - action space:
+      0 ~ (width*4 - 1): (rotation, x) 배치
+      width*4: 홀드 액션 (이번 턴은 홀드만 하고 조각 안 둠)
     """
 
     def __init__(self, width=10, height=20, max_steps=500, seed: int = 0):
@@ -185,8 +232,8 @@ class TetrisEnv:
         self.width = width
         self.height = height
         self.max_steps = max_steps
-        self.n_actions = width * 4
-        self.rng = random.Random(seed)
+        self.n_actions = width * 4 + 1  # +1: hold 액션
+
         random.seed(seed)
         np.random.seed(seed)
 
@@ -195,6 +242,7 @@ class TetrisEnv:
     def reset(self) -> np.ndarray:
         self.board.reset()
         self.steps = 0
+        self.board.spawn_new_piece()
         return self.board.get_state_vector()
 
     def step(self, action: int):
@@ -205,45 +253,55 @@ class TetrisEnv:
         done = False
         info = {}
 
-        # 현재 조각 확인
         if self.board.game_over:
-            done = True
-            return self.board.get_state_vector(), 0.0, done, info
+            return self.board.get_state_vector(), 0.0, True, info
 
-        shape_idx = self.board.current_shape_idx
-        shape_name = SHAPES[shape_idx]
-        num_rots = len(TETROMINOES[shape_name])
-
-        # action → (rot, x)
-        rot_id = action // self.width
-        x = action % self.width
-        rotation = rot_id % num_rots
-
-        # 해당 위치에 하드드롭
-        cleared, illegal_or_over = self.board.hard_drop_at(shape_idx, rotation, x)
-
-        # 기본 보상: 줄 제거 보상 + 스텝 페널티
         reward = 0.0
-        if cleared > 0:
-            reward += (cleared ** 2) * 5.0  # 1줄:5, 2줄:20, 3줄:45, 4줄:80 ...
-        reward -= 0.1  # 매 스텝마다 약간의 페널티
 
-        if illegal_or_over:
-            reward -= 10.0
-            done = True
-        elif self.steps >= self.max_steps:
-            done = True
-
-        # 새 조각 스폰 (게임 안 끝났을 때만)
-        if not done:
-            self.board.current_shape_idx = -1
-            self.board.spawn_new_piece()
+        # Hold 액션
+        if action == self.n_actions - 1:
+            self.board.hold_current_piece()
             if self.board.game_over:
                 reward -= 10.0
                 done = True
+            else:
+                reward -= 0.05  # 홀드 비용
+        else:
+            # 배치 액션
+            if self.board.current_shape_idx < 0:
+                self.board.spawn_new_piece()
+                if self.board.game_over:
+                    return self.board.get_state_vector(), -10.0, True, info
+
+            shape_idx = self.board.current_shape_idx
+            shape_name = SHAPES[shape_idx]
+            num_rots = len(TETROMINOES[shape_name])
+
+            rot_id = action // self.width
+            x = action % self.width
+            rotation = rot_id % num_rots
+
+            cleared, illegal = self.board.hard_drop_at(shape_idx, rotation, x)
+            reward += cleared * 1.0
+            reward -= 0.01
+
+            if illegal:
+                reward -= 10.0
+                done = True
+            else:
+                # 다음 턴을 위해 새 조각
+                self.board.current_shape_idx = -1
+                self.board.spawn_new_piece()
+                if self.board.game_over:
+                    reward -= 10.0
+                    done = True
+
+        if self.steps >= self.max_steps and not done:
+            done = True
 
         next_state = self.board.get_state_vector()
         return next_state, reward, done, info
 
     def sample_action(self) -> int:
-        return self.rng.randint(0, self.n_actions - 1)
+        return random.randint(0, self.n_actions - 1)
+

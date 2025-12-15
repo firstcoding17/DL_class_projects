@@ -1,5 +1,4 @@
 # train_tetris_vs_heuristic.py
-
 import argparse
 import numpy as np
 import torch
@@ -11,11 +10,10 @@ from tetris_env_vs_heuristic import TetrisVsHeuristicEnv
 
 class PolicyNet(nn.Module):
     """
-    싱글 환경에서 쓰던 것과 동일한 구조:
-    - state_dim = 207
-    - n_actions = 40 (width=10 * 4)
+    state_dim = 214 (board 200 + current 7 + hold 7)
+    n_actions = 41 (width=10 → 10*4 + 1(hold))
     """
-    def __init__(self, state_dim=207, n_actions=40, hidden=256):
+    def __init__(self, state_dim=214, n_actions=41, hidden=256):
         super().__init__()
         self.net = nn.Sequential(
             nn.Linear(state_dim, hidden),
@@ -30,20 +28,23 @@ class PolicyNet(nn.Module):
 
 
 def train_vs_heuristic(
-    num_episodes=1000,
+    num_episodes=5000,
     gamma=0.99,
     lr=1e-3,
-    save_path="tetris_vs_heuristic_policy.pth",
-    log_interval=20,
+    save_path="tetris_vs_heuristic_hold_policy.pth",
+    log_interval=50,
 ):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     env = TetrisVsHeuristicEnv()
-    state_dim = 207
+    state_dim = 214
     n_actions = env.n_actions
 
     policy = PolicyNet(state_dim, n_actions).to(device)
     optimizer = optim.Adam(policy.parameters(), lr=lr)
+
+    episode_returns = []
+    episode_lengths = []
 
     for episode in range(1, num_episodes + 1):
         state = env.reset()
@@ -65,17 +66,18 @@ def train_vs_heuristic(
 
             state = next_state
 
-        # 에피소드 리턴 / 승패 등
         ep_return = float(sum(rewards))
+        ep_len = len(rewards)
+        episode_returns.append(ep_return)
+        episode_lengths.append(ep_len)
 
-        # Gt 계산 (discounted return)
+        # Gt 계산 (discount)
         returns = []
         G = 0.0
         for r in reversed(rewards):
             G = r + gamma * G
             returns.insert(0, G)
         returns = torch.tensor(returns, dtype=torch.float32).to(device)
-
         if len(returns) > 1:
             returns = (returns - returns.mean()) / (returns.std() + 1e-8)
 
@@ -88,24 +90,31 @@ def train_vs_heuristic(
         optimizer.step()
 
         if episode % log_interval == 0 or episode == 1:
-            print(f"[Episode {episode}/{num_episodes}] "
-                  f"Return: {ep_return:.2f}, Steps: {len(rewards)}, Loss: {loss.item():.4f}")
+            print(
+                f"[Episode {episode}/{num_episodes}] "
+                f"Return: {ep_return:.2f}, Steps: {ep_len}, Loss: {loss.item():.4f}"
+            )
 
-        # 중간 저장
-        if episode % max(100, log_interval) == 0:
+        if episode % max(200, log_interval) == 0:
             torch.save(policy.state_dict(), save_path)
             print(f"  -> Saved model to {save_path}")
 
+    # 로그 저장 (원하면 시각화에 사용)
+    np.savez(
+        "tetris_vs_heuristic_hold_logs.npz",
+        returns=np.array(episode_returns, dtype=np.float32),
+        lengths=np.array(episode_lengths, dtype=np.int32),
+    )
     torch.save(policy.state_dict(), save_path)
     print(f"Training finished. Final model saved to {save_path}")
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--episodes", type=int, default=5000, help="학습 에피소드 수")
+    parser.add_argument("--episodes", type=int, default=5000)
     parser.add_argument("--gamma", type=float, default=0.99)
     parser.add_argument("--lr", type=float, default=1e-3)
-    parser.add_argument("--save_path", type=str, default="tetris_vs_heuristic_policy.pth")
+    parser.add_argument("--save_path", type=str, default="tetris_vs_heuristic_hold_policy.pth")
     args = parser.parse_args()
 
     train_vs_heuristic(

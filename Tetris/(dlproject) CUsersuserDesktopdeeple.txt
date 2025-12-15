@@ -1,0 +1,153 @@
+(dlproject) C:\Users\user\Desktop\deeplearning_project\Tetris>python train_tetris_vs_heuristic_parallel.py --episodes 20000 --num_envs 20
+[Batch 1] Episodes: 20/20000, MeanReturn: -51.84, MeanLen: 3.8, Loss: -0.7644
+[Batch 10] Episodes: 200/20000, MeanReturn: -52.53, MeanLen: 4.5, Loss: -3.0812
+[Batch 20] Episodes: 400/20000, MeanReturn: -51.41, MeanLen: 3.5, Loss: -8.3090
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 30] Episodes: 600/20000, MeanReturn: -50.28, MeanLen: 2.0, Loss: 10.0085
+[Batch 40] Episodes: 800/20000, MeanReturn: -50.47, MeanLen: 2.0, Loss: 5.4712
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 50] Episodes: 1000/20000, MeanReturn: -51.04, MeanLen: 3.0, Loss: -14.3760
+[Batch 60] Episodes: 1200/20000, MeanReturn: -50.45, MeanLen: 2.2, Loss: 8.1183
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 70] Episodes: 1400/20000, MeanReturn: -50.99, MeanLen: 3.9, Loss: -29.1821
+[Batch 80] Episodes: 1600/20000, MeanReturn: -29.95, MeanLen: 194.8, Loss: -283.2325
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 90] Episodes: 1800/20000, MeanReturn: 6.18, MeanLen: 214.6, Loss: -191.8271
+[Batch 100] Episodes: 2000/20000, MeanReturn: 12.52, MeanLen: 290.3, Loss: -46.5070
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 110] Episodes: 2200/20000, MeanReturn: 9.89, MeanLen: 279.4, Loss: 3.4517
+[Batch 120] Episodes: 2400/20000, MeanReturn: 10.61, MeanLen: 317.1, Loss: 24.6039
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 130] Episodes: 2600/20000, MeanReturn: 21.60, MeanLen: 255.9, Loss: 24.8564
+[Batch 140] Episodes: 2800/20000, MeanReturn: 18.52, MeanLen: 300.8, Loss: -40.3646
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 150] Episodes: 3000/20000, MeanReturn: 6.42, MeanLen: 331.4, Loss: -17.4145
+[Batch 160] Episodes: 3200/20000, MeanReturn: 17.50, MeanLen: 303.9, Loss: -3.8367
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 170] Episodes: 3400/20000, MeanReturn: 4.55, MeanLen: 322.6, Loss: -62.5526
+[Batch 180] Episodes: 3600/20000, MeanReturn: 16.56, MeanLen: 297.4, Loss: -0.2182
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 190] Episodes: 3800/20000, MeanReturn: 17.15, MeanLen: 313.6, Loss: -14.4387
+[Batch 200] Episodes: 4000/20000, MeanReturn: 19.16, MeanLen: 292.6, Loss: -16.3172
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 210] Episodes: 4200/20000, MeanReturn: 8.14, MeanLen: 348.9, Loss: -11.2861
+[Batch 220] Episodes: 4400/20000, MeanReturn: 27.16, MeanLen: 285.5, Loss: -16.8615
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 230] Episodes: 4600/20000, MeanReturn: 21.83, MeanLen: 251.6, Loss: -5.3611
+[Batch 240] Episodes: 4800/20000, MeanReturn: 18.05, MeanLen: 321.1, Loss: -9.7272
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 250] Episodes: 5000/20000, MeanReturn: 18.02, MeanLen: 313.9, Loss: -22.6435
+[Batch 260] Episodes: 5200/20000, MeanReturn: 17.86, MeanLen: 314.9, Loss: 14.9362
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 270] Episodes: 5400/20000, MeanReturn: 21.55, MeanLen: 265.9, Loss: -13.5320
+[Batch 280] Episodes: 5600/20000, MeanReturn: 20.61, MeanLen: 270.8, Loss: -0.0278
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 290] Episodes: 5800/20000, MeanReturn: 14.68, MeanLen: 330.3, Loss: 0.1950
+[Batch 300] Episodes: 6000/20000, MeanReturn: 26.55, MeanLen: 276.9, Loss: 0.1728
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 310] Episodes: 6200/20000, MeanReturn: 19.60, MeanLen: 301.8, Loss: -8.7697
+[Batch 320] Episodes: 6400/20000, MeanReturn: 29.56, MeanLen: 257.7, Loss: 0.1278
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 330] Episodes: 6600/20000, MeanReturn: 23.20, MeanLen: 241.1, Loss: -0.1934
+[Batch 340] Episodes: 6800/20000, MeanReturn: 10.99, MeanLen: 360.6, Loss: -13.4377
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 350] Episodes: 7000/20000, MeanReturn: 3.92, MeanLen: 393.6, Loss: 0.0456
+[Batch 360] Episodes: 7200/20000, MeanReturn: 29.73, MeanLen: 211.0, Loss: -10.0443
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 370] Episodes: 7400/20000, MeanReturn: 14.23, MeanLen: 309.4, Loss: 0.0270
+[Batch 380] Episodes: 7600/20000, MeanReturn: 20.05, MeanLen: 342.5, Loss: -6.9765
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 390] Episodes: 7800/20000, MeanReturn: 24.77, MeanLen: 298.5, Loss: 0.0067
+[Batch 400] Episodes: 8000/20000, MeanReturn: 11.55, MeanLen: 307.0, Loss: 0.0102
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 410] Episodes: 8200/20000, MeanReturn: 8.25, MeanLen: 353.9, Loss: 0.0081
+[Batch 420] Episodes: 8400/20000, MeanReturn: 18.07, MeanLen: 311.5, Loss: 0.0139
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 430] Episodes: 8600/20000, MeanReturn: 27.35, MeanLen: 285.0, Loss: -0.1002
+[Batch 440] Episodes: 8800/20000, MeanReturn: 6.92, MeanLen: 338.6, Loss: -0.0148
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 450] Episodes: 9000/20000, MeanReturn: 20.84, MeanLen: 285.1, Loss: -0.1342
+[Batch 460] Episodes: 9200/20000, MeanReturn: 13.42, MeanLen: 328.6, Loss: -0.0023
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 470] Episodes: 9400/20000, MeanReturn: 21.33, MeanLen: 298.1, Loss: -8.8087
+[Batch 480] Episodes: 9600/20000, MeanReturn: 25.71, MeanLen: 257.8, Loss: 0.1797
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 490] Episodes: 9800/20000, MeanReturn: 29.21, MeanLen: 267.7, Loss: 0.0226
+[Batch 500] Episodes: 10000/20000, MeanReturn: 5.06, MeanLen: 359.9, Loss: -12.2843
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 510] Episodes: 10200/20000, MeanReturn: 21.97, MeanLen: 269.5, Loss: 0.0055
+[Batch 520] Episodes: 10400/20000, MeanReturn: 13.97, MeanLen: 307.6, Loss: -0.0063
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 530] Episodes: 10600/20000, MeanReturn: 24.30, MeanLen: 309.5, Loss: -0.2066
+[Batch 540] Episodes: 10800/20000, MeanReturn: 22.97, MeanLen: 282.6, Loss: 0.0115
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 550] Episodes: 11000/20000, MeanReturn: 20.56, MeanLen: 323.7, Loss: 0.0011
+[Batch 560] Episodes: 11200/20000, MeanReturn: 13.18, MeanLen: 342.3, Loss: -10.4355
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 570] Episodes: 11400/20000, MeanReturn: 15.27, MeanLen: 332.6, Loss: 0.0182
+[Batch 580] Episodes: 11600/20000, MeanReturn: 10.77, MeanLen: 360.6, Loss: 0.1118
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 590] Episodes: 11800/20000, MeanReturn: 6.97, MeanLen: 364.6, Loss: -0.0037
+[Batch 600] Episodes: 12000/20000, MeanReturn: 27.95, MeanLen: 281.0, Loss: -0.0155
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 610] Episodes: 12200/20000, MeanReturn: 13.54, MeanLen: 313.1, Loss: 0.0236
+[Batch 620] Episodes: 12400/20000, MeanReturn: 12.07, MeanLen: 321.6, Loss: -0.0179
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 630] Episodes: 12600/20000, MeanReturn: 22.95, MeanLen: 284.0, Loss: -0.0221
+[Batch 640] Episodes: 12800/20000, MeanReturn: 20.22, MeanLen: 322.6, Loss: 0.0063
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 650] Episodes: 13000/20000, MeanReturn: 20.65, MeanLen: 314.9, Loss: 0.0267
+[Batch 660] Episodes: 13200/20000, MeanReturn: 10.27, MeanLen: 326.6, Loss: -0.0438
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 670] Episodes: 13400/20000, MeanReturn: 18.63, MeanLen: 314.4, Loss: -0.0194
+[Batch 680] Episodes: 13600/20000, MeanReturn: 14.36, MeanLen: 323.4, Loss: 6.4343
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 690] Episodes: 13800/20000, MeanReturn: 14.72, MeanLen: 297.5, Loss: 0.0467
+[Batch 700] Episodes: 14000/20000, MeanReturn: 21.92, MeanLen: 291.6, Loss: 0.0101
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 710] Episodes: 14200/20000, MeanReturn: 15.57, MeanLen: 324.6, Loss: 0.0060
+[Batch 720] Episodes: 14400/20000, MeanReturn: 14.99, MeanLen: 298.2, Loss: -0.0438
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 730] Episodes: 14600/20000, MeanReturn: 15.76, MeanLen: 321.7, Loss: 0.0273
+[Batch 740] Episodes: 14800/20000, MeanReturn: 30.35, MeanLen: 253.9, Loss: -0.0006
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 750] Episodes: 15000/20000, MeanReturn: 20.67, MeanLen: 278.5, Loss: 0.0332
+[Batch 760] Episodes: 15200/20000, MeanReturn: 24.26, MeanLen: 301.8, Loss: 0.0031
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 770] Episodes: 15400/20000, MeanReturn: 19.14, MeanLen: 294.2, Loss: -0.0511
+[Batch 780] Episodes: 15600/20000, MeanReturn: 16.56, MeanLen: 332.8, Loss: -0.0059
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 790] Episodes: 15800/20000, MeanReturn: 2.51, MeanLen: 373.7, Loss: 0.0098
+[Batch 800] Episodes: 16000/20000, MeanReturn: 26.00, MeanLen: 275.9, Loss: 0.0053
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 810] Episodes: 16200/20000, MeanReturn: 18.92, MeanLen: 299.6, Loss: -0.0353
+[Batch 820] Episodes: 16400/20000, MeanReturn: 18.36, MeanLen: 278.7, Loss: -1.4051
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 830] Episodes: 16600/20000, MeanReturn: 23.31, MeanLen: 268.9, Loss: -0.0122
+[Batch 840] Episodes: 16800/20000, MeanReturn: 9.45, MeanLen: 337.9, Loss: 0.0602
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 850] Episodes: 17000/20000, MeanReturn: 15.47, MeanLen: 359.8, Loss: 23.0297
+[Batch 860] Episodes: 17200/20000, MeanReturn: 19.64, MeanLen: 294.1, Loss: -0.0029
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 870] Episodes: 17400/20000, MeanReturn: 11.63, MeanLen: 309.3, Loss: -0.0467
+[Batch 880] Episodes: 17600/20000, MeanReturn: 13.47, MeanLen: 349.6, Loss: -0.0219
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 890] Episodes: 17800/20000, MeanReturn: 8.08, MeanLen: 360.4, Loss: -0.0763
+[Batch 900] Episodes: 18000/20000, MeanReturn: 16.54, MeanLen: 305.8, Loss: 16.2496
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 910] Episodes: 18200/20000, MeanReturn: 18.63, MeanLen: 279.4, Loss: 0.0134
+[Batch 920] Episodes: 18400/20000, MeanReturn: 15.08, MeanLen: 303.4, Loss: -0.0176
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 930] Episodes: 18600/20000, MeanReturn: 24.64, MeanLen: 257.2, Loss: 0.0631
+[Batch 940] Episodes: 18800/20000, MeanReturn: 17.60, MeanLen: 288.9, Loss: 0.0168
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 950] Episodes: 19000/20000, MeanReturn: 3.87, MeanLen: 341.2, Loss: -6.1555
+[Batch 960] Episodes: 19200/20000, MeanReturn: 32.37, MeanLen: 211.6, Loss: 0.0640
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 970] Episodes: 19400/20000, MeanReturn: 15.80, MeanLen: 281.0, Loss: -0.0857
+[Batch 980] Episodes: 19600/20000, MeanReturn: 26.74, MeanLen: 262.1, Loss: -8.6836
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+[Batch 990] Episodes: 19800/20000, MeanReturn: 4.75, MeanLen: 364.9, Loss: 0.2451
+[Batch 1000] Episodes: 20000/20000, MeanReturn: 15.72, MeanLen: 321.6, Loss: 0.0639
+  -> Saved model to tetris_vs_heuristic_hold_policy_parallel.pth
+Training finished. Final model saved to tetris_vs_heuristic_hold_policy_parallel.pth
